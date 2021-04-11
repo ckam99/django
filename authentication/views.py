@@ -3,7 +3,7 @@ from django.contrib import auth
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.permissions import IsAuthenticated,
+from rest_framework.permissions import IsAuthenticated
 from .serializers import UserSerializer, LoginSerializer
 import jwt
 
