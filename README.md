@@ -3,19 +3,17 @@
 - Set environment variables
 
 ```
-cp .env.dev .env
+cp .env.example .env
 ```
 
-- Build app
-
+#### Dev environment
 ```
-docker-compose build
-```
-
-- Start services
-
-```
-docker-compose up
+docker-compose up --build
 ```
 
+#### Production environment
+
+```
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml up  --build
+```
 
