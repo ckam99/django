@@ -1,0 +1,18 @@
+version: '3.7'
+
+services:
+
+  db:
+    ports: 
+     - 54321:5432
+  django:
+    image: docker-prod
+  nginx:
+    build: ./nginx
+    volumes:
+      - static:/static
+    ports:
+      - "80:80"
+    depends_on:
+      - django
+      

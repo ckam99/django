@@ -7,17 +7,33 @@ services:
     env_file:
       - .env
     build:
-      context: .
-    ports:
-      - "8000:8000"
-  nginx:
-    build: ./nginx
+      context: src
+    depends_on: 
+      - db
+      
+  db:
+    image: postgres:10-alpine
+    env_file:
+      - ./.env
+    volumes: 
+      - pgdata:/var/lib/postgresql/data
+
+  redis:
+    image: redis:alpine
+
+  celery:
+    restart: always
+    build: src
+    command: celery -A core worker -l info
     volumes:
-      - static:/static
-    ports:
-      - "80:80"
+      - ./src:/app
+    env_file:
+      - ./.env
     depends_on:
+      - db
+      - redis
       - django
 
 volumes:
   static:
+  pgdata:

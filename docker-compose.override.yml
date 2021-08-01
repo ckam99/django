@@ -1,0 +1,9 @@
+version: '3.7'
+
+services:
+  django:
+    ports:
+      - "8000:8000"
+  db:
+    ports: 
+     - 54321:5432
