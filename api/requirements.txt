@@ -1,0 +1,4 @@
+django==3.2.5
+djangorestframework==3.12.4
+django-cors-headers==3.7.0
+gunicorn==20.1.0
