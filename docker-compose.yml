@@ -3,7 +3,7 @@ version: '3.7'
 services:
   django:
     volumes:
-      - static:/static
+      - ./static:/static/
     env_file:
       - .env
     build:

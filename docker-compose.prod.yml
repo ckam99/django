@@ -5,9 +5,19 @@ services:
   db:
     ports: 
      - 54321:5432
+    container_name: db-x-s
+    restart: always
   django:
-    image: docker-prod
+    container_name: django-x-s
+    restart: always
+    command: >
+      sh -c "python manage.py migrate --no-input &&
+          python manage.py connectdb &&
+          python manage.py collectstatic --no-input &&
+          gunicorn core.wsgi:application --bind 0.0.0.0:8000"
   nginx:
+    container_name: nginx-x-s
+    restart: always
     build: ./nginx
     volumes:
       - static:/static
@@ -16,3 +26,6 @@ services:
     depends_on:
       - django
       
+volumes:
+  static:
+  pgdata:

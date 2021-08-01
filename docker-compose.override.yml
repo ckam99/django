@@ -4,6 +4,10 @@ services:
   django:
     ports:
       - "8000:8000"
+    command: >
+      sh -c "python3 manage.py migrate &&
+            python3 manage.py connectdb &&
+            python3 manage.py runserver 0.0.0.0:8000"
   db:
     ports: 
      - 54321:5432
