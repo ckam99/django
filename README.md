@@ -1,6 +1,13 @@
-# Django Celery Redis using Docker, Nginx and Guvicorn
+# Django Application
 
-- Set environment variables
+- Django Rest Framework
+- Celery 
+- Redis
+- Docker
+- Nginx
+- Guvicorn
+
+#### Set environment variables
 
 ```
 cp .env.example .env

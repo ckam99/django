@@ -34,9 +34,12 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.username
 
     def _generate_jwt_token(self):
-        dt = datetime.now() + timedelta(days=60)
-        token = jwt.encode({
+        to_encode = {}
+        expire = datetime.utcnow() + timedelta(minutes=60*1440)
+        to_encode.update({
             'id': self.pk,
-            'exp': int(dt.strftime('%s'))
-        }, settings.SECRET_KEY, algorithm='HS256')
-        return token.decode('utf-8')
+            "exp": expire
+        })
+        access_token = jwt.encode(
+            to_encode, settings.SECRET_KEY, algorithm='HS256')
+        return access_token
