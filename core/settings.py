@@ -37,13 +37,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'authentication',
+    'users',
     'products'
 ]
 
 REST_fRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'authentication.backends.JWTAuthentication',
+        'users.backends.JWTAuthentication',
     )
 }
 
