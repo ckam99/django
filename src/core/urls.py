@@ -8,4 +8,4 @@ urlpatterns = [
 ]
 
 if not settings.DEBUG:
-    handler404 = "base.views.page_not_found"
+    handler404 = "base.views.handler404"
