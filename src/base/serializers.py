@@ -67,7 +67,7 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ('id', 'email', 'username', 'fullname',
                   'password', 'token', 'last_login')
-        read_only_fields = ('token',)
+        read_only_fields = ('token', 'password', 'email', 'username')
 
     def update(self, instance, validated_data):
         """Performs an update on a User."""
