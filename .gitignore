@@ -1,0 +1,6 @@
+__pycache__/
+staticfiles/
+media/
+/docs/_build/
+
+.env
