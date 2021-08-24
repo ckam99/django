@@ -1,4 +1,4 @@
-# Django Application
+# Django Rest Framework
 
 - Django Rest Framework
 - Celery 
