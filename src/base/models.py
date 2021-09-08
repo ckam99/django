@@ -6,6 +6,15 @@ from django.contrib.auth.models import (AbstractBaseUser, PermissionsMixin)
 from .managers import UserManager
 
 
+class Confirmation(models.Model):
+    email = models.EmailField(max_length=255)
+    code = models.CharField(max_length=255, unique=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.email}/{self.code}'
+
+
 class User(AbstractBaseUser, PermissionsMixin):
     fullname = models.CharField(max_length=60, null=True, blank=True)
     username = models.CharField(db_index=True, max_length=255, unique=True)
@@ -14,6 +23,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    confirmed_at = models.DateTimeField(null=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']

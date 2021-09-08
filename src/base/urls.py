@@ -1,11 +1,12 @@
 from django.urls import path
 
-from .views import RegistrationAPIView, LoginAPIView, UserRetrieveUpdateAPIView
+from . import views
 
 app_name = 'base'
 urlpatterns = [
-    path('auth/user/', UserRetrieveUpdateAPIView.as_view()),
-    path('auth/register/', RegistrationAPIView.as_view()),
-    path('auth/login/', LoginAPIView.as_view()),
+    path('auth/user/', views.UserRetrieveUpdateAPIView.as_view()),
+    path('auth/register/', views.RegistrationAPIView.as_view()),
+    path('auth/login/', views.LoginAPIView.as_view()),
+    path('auth/confirm/', views.ConfirmEmailAPIView.as_view()),
 
 ]

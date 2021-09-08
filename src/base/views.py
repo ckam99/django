@@ -4,9 +4,10 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.generics import RetrieveUpdateAPIView
+from .models import User, Confirmation
 
 from .serializers import (
-    LoginSerializer, RegistrationSerializer, UserSerializer)
+    LoginSerializer, RegistrationSerializer, UserSerializer, ConfirmEmailSerializer)
 from .renderers import UserJSONRenderer
 
 
@@ -17,9 +18,7 @@ class RegistrationAPIView(APIView):
     serializer_class = RegistrationSerializer
 
     def post(self, request):
-        print(request.data)
         user = request.data or {}
-        print("USER", user)
         serializer = self.serializer_class(data=user)
         serializer.is_valid(raise_exception=True)
         serializer.save()
@@ -55,6 +54,18 @@ class UserRetrieveUpdateAPIView(RetrieveUpdateAPIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class ConfirmEmailAPIView(APIView):
+    permission_classes = (AllowAny,)
+    renderer_classes = (UserJSONRenderer,)
+    serializer_class = ConfirmEmailSerializer
+
+    def post(self, request):
+        payload = request.data or {}
+        serializer = self.serializer_class(data=payload)
+        serializer.is_valid(raise_exception=True)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 def handler404(request, exception):

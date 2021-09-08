@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import (UserAdmin as BaseUserAdmin)
 
 from .forms import UserCreationForm, UserChangeForm
-from .models import User
+from .models import User, Confirmation
 
 
 class UserAdmin(BaseUserAdmin):
@@ -11,7 +11,7 @@ class UserAdmin(BaseUserAdmin):
     form = UserChangeForm
     model = User
     list_display = ('email', 'username', 'fullname',
-                    'is_staff', 'is_active', 'created_at', 'last_login')
+                    'is_staff', 'is_active', 'created_at', 'last_login', 'confirmed_at')
     list_filter = ('email', 'is_staff', 'is_active',)
     fieldsets = (
         (None, {'fields': ('email', 'password', 'username', 'fullname')}),
@@ -27,4 +27,14 @@ class UserAdmin(BaseUserAdmin):
     ordering = ('email',)
 
 
+class ConfirmationAdmin(admin.ModelAdmin):
+    list_display = ('id', 'email', 'code', 'created_at',)
+    readonly_fields = ()
+
+    filter_horizontal = ()
+    list_filter = ()
+    fieldsets = ()
+
+
 admin.site.register(User, UserAdmin)
+admin.site.register(Confirmation, ConfirmationAdmin)

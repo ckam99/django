@@ -4,6 +4,9 @@ from rest_framework import authentication, exceptions
 from .models import User
 import base64
 from django.contrib.auth import authenticate
+from base.models import Confirmation
+import random
+import uuid
 
 
 class JWTBasicAuthentication(authentication.BaseAuthentication):
@@ -51,3 +54,20 @@ class JWTBasicAuthentication(authentication.BaseAuthentication):
             raise exceptions.AuthenticationFailed(
                 'This user has been deactivated.')
         return (user, None)
+
+
+class ModelHelper():
+
+    @staticmethod
+    def unique_code(as_token=True):
+        code = uuid.uuid1().hex if as_token else random.randint(209999, 999999)
+        if Confirmation.objects.filter(code=code).exists():
+            return ModelHelper.unique_code()
+        return code
+
+    @staticmethod
+    def create_confirmation_code(email, as_token=True):
+        code = ModelHelper.unique_code(as_token)
+        Confirmation.objects.create(
+            email=email, code=code)
+        return code

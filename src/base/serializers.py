@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import authenticate
-from .models import User
+from .models import User, Confirmation
+import datetime
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
@@ -83,3 +84,49 @@ class UserSerializer(serializers.ModelSerializer):
         instance.save()
 
         return instance
+
+
+class ConfirmEmailSerializer(serializers.Serializer):
+    """Serializers confirmation email requests."""
+    email = serializers.CharField(max_length=255)
+    token = serializers.CharField(max_length=255)
+
+    class Meta:
+        model = User
+        fields = ('id', 'email',  'confirmed_at', 'token')
+
+    def validate(self, data):
+        email = data.get('email', None)
+        token = data.get('token', None)
+
+        if token is None:
+            raise serializers.ValidationError(
+                'A token is required to log in.'
+            )
+        confirmer = Confirmation.objects.filter(
+            email=email, code=token).first()
+
+        if confirmer:
+            diff_date = datetime.datetime.now() - confirmer.created_at.replace(tzinfo=None)
+            if diff_date.total_seconds() > 86400:
+                raise serializers.ValidationError(
+                    'Your confirmation token is expirated.'
+                )
+        else:
+            raise serializers.ValidationError(
+                'corrupted credentials'
+            )
+        if email:
+            user = User.objects.filter(email=email).first()
+            if user is None:
+                raise serializers.ValidationError(
+                    'An email address is required to log in.'
+                )
+            user.confirmed_at = datetime.datetime.now()
+            user.save()
+            confirmer.delete()
+        else:
+            raise serializers.ValidationError(
+                'An email address is required to log in.'
+            )
+        return data

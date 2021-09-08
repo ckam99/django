@@ -6,4 +6,6 @@ from .models import User
 
 @receiver(post_save, sender=User)
 def user_save_handle(sender, instance, **kwargs):
-    return send_confirmation_mail(instance.email)
+    if instance.confirmed_at is None:
+        return send_confirmation_mail(instance.email)
+    pass
