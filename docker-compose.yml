@@ -34,11 +34,18 @@ services:
     depends_on:
       - redis
 
+  celery-beat:
+    <<: *django
+    command: celery -A core beat -l info -s /opt/celerybeat-schedule
+    depends_on:
+      - redis
+
   flower:
     <<: *django
     command: celery -A core flower
     depends_on:
       - redis
+
 
 volumes:
   static:

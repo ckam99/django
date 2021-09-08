@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
+    # 'django_celery_beat',
     'base',
 ]
 
@@ -159,6 +160,8 @@ AUTH_USER_MODEL = 'base.User'
 CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL', 'redis://redis:6379')
 CELERY_RESULT_BACKEND = os.environ.get(
     'CELERY_RESULT_BACKEND', 'redis://redis:6379')
+# CELERY BEAT
+# CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
 REST_FRAMEWORK = {
     'EXCEPTION_HANDLER': 'core.exceptions.core_exception_handler',

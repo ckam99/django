@@ -24,7 +24,12 @@ services:
     ports:
       - "80:80"
     depends_on:
-      - django
+      - django 
+
+  flower:
+  container_name: flower
+    ports: 
+     - 5555:5555
       
 volumes:
   static:
