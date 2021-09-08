@@ -11,3 +11,7 @@ services:
   db:
     ports: 
      - 54321:5432
+  
+  flower:
+    ports: 
+     - 5555:5555

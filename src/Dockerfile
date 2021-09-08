@@ -1,7 +1,6 @@
 FROM python:3.8.5-alpine
 
-# ENV PYTHONUNBUFFERED 1
-
+ENV PYTHONUNBUFFERED 1
 
 RUN apk add --update --no-cache postgresql-client jpeg-dev
 RUN apk add --update --no-cache --virtual .tmp-build-deps \ 

@@ -1,38 +1,44 @@
 version: '3.7'
 
 services:
-  django:
-    volumes:
-      - ./static:/static/
-    env_file:
-      - .env
-    build:
-      context: src
-    depends_on: 
-      - db
-      
+
   db:
     image: postgres:10-alpine
+    environment: 
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    restart: always
     env_file:
       - ./.env
     volumes: 
       - pgdata:/var/lib/postgresql/data
 
+  django:
+    <<: &django
+      build: src
+      volumes:
+        - ./src:/app
+      restart: always
+      env_file:
+        - .env
+      depends_on: 
+        - db
+
   redis:
     image: redis:alpine
 
   celery:
-    restart: always
-    build: src
+    <<: *django
     command: celery -A core worker -l info
-    volumes:
-      - ./src:/app
-    env_file:
-      - ./.env
     depends_on:
-      - db
       - redis
-      - django
+
+  flower:
+    <<: *django
+    command: celery -A core flower
+    depends_on:
+      - redis
 
 volumes:
   static:

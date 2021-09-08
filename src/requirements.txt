@@ -3,6 +3,7 @@ gunicorn==20.0.4
 djangorestframework==3.12.4
 celery==5.1.2
 redis==3.5.3
-# psycopg2==2.9.1
+psycopg2==2.9.1
 pyjwt==2.1.0
 django-cors-headers==3.8.0
+flower==1.0.0
