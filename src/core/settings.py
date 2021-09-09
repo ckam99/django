@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
 from pathlib import Path
+from celery.schedules import crontab
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -42,7 +44,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
-    # 'django_celery_beat',
     'base',
 ]
 
@@ -155,14 +156,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Override django user default model
 AUTH_USER_MODEL = 'base.User'
 
-
-# Celery and redis settings
-CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL', 'redis://redis:6379')
-CELERY_RESULT_BACKEND = os.environ.get(
-    'CELERY_RESULT_BACKEND', 'redis://redis:6379')
-# CELERY BEAT
-# CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
-
 REST_FRAMEWORK = {
     'EXCEPTION_HANDLER': 'core.exceptions.core_exception_handler',
     'NON_FIELD_ERRORS_KEY': 'error',
@@ -183,3 +176,30 @@ EMAIL_PORT = os.environ.get('EMAIL_PORT', 2525)
 EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', True)
 # EMAIL_USE_SSL = os.environ.get('EMAIL_USE_SSL', False)
 DEFAULT_FROM_EMAIL = os.environ.get('EMAIL_HOST', 'noreply@example.com')
+
+
+# Celery and redis settings
+CELERY_BROKER_URL = os.environ.get(
+    'CELERY_BROKER_URL', 'redis://127.0.0.1:6379')
+CELERY_RESULT_BACKEND = os.environ.get(
+    'CELERY_RESULT_BACKEND', 'redis://127.0.0.1:6379')
+
+CELERY_BEAT_SCHEDULE = {
+    'great-every-5-seconds': {
+        'task': 'base.tasks.tests.great',
+        'schedule': 5,
+    },
+    'add-two-numbers-every-30-seconds': {
+        'task': 'base.tasks.tests.add',
+        'schedule': 30,
+        'args': (16, 34)
+    },
+    'say-hello-every-1-minute': {
+        'task': 'base.tasks.tests.say_hello',
+        'schedule': crontab(minute='*/1'),
+    },
+    'say-hello-every-sunday-at': {
+        'task': 'base.tasks.tests.say_hello',
+        'schedule':  crontab(hour=4, minute=0, day_of_week=1),
+    },
+}

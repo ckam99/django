@@ -1,13 +1,22 @@
 from celery import shared_task
 
 
-@shared_task(bind=True)
-def say_hello(self):
-    print('Hello everybody!')
-    return 'Done'
+@shared_task
+def say_hello():
+    return 'Hello everybody!'
 
 
-@shared_task(bind=True)
-def great(self, name):
-    print('Hi {}!'.format(name))
-    return 'Done'
+@shared_task
+def great():
+    return 'Hi Rebecca'
+
+
+@shared_task
+def test(arg):
+    print(arg)
+
+
+@shared_task
+def add(x, y):
+    z = x + y
+    print(z)
