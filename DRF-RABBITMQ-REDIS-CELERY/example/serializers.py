@@ -1,5 +1,6 @@
+from django.db.models import fields
 from rest_framework import serializers
-from .models import Book, Author
+from .models import Book, Author, Tag, Category
 from core.mixins.queryset import EagerLoadingMixin
 
 
@@ -35,4 +36,18 @@ class AuthorDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Author
+        fields = '__all__'
+
+
+class TagSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Tag
+        fields = '__all__'
+
+
+class CategorySerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Category
         fields = '__all__'

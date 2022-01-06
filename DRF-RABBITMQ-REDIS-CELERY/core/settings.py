@@ -135,3 +135,24 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Caching
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+        'LOCATION': [
+            # 'redis://{}:{}@{}:{}'.format(
+            #     os.environ.get('REDIS_USER', None),
+            #     os.environ.get('REDIS_PASSWORD', None),
+            #     os.environ.get('REDIS_HOST', '127.0.0.1'),
+            #     os.environ.get('REDIS_PORT', '6379'),
+            # ),
+            'redis://{}:{}'.format(
+                os.environ.get('REDIS_HOST', '127.0.0.1'),
+                os.environ.get('REDIS_PORT', '6379'),
+            )
+        ]
+    }
+}
